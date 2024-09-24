@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Выбор шиномонтажа</title>
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+  <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+  <h1>Выберите шиномонтаж</h1>
+  <div class="service__wrapp">
+    <div class="service__map" id="map"></div>
+    <div class="service__list" id="service-list"></div>
+  </div>
+  <div id="selected-service">
+    <h2>Выбранный шиномонтаж</h2>
+    <p><strong>Адрес:</strong> <span id="service-address"></span></p>
+    <p><strong>Режим работы:</strong> <span id="service-hours"></span></p>
+    <button id="submit-request">Отправить заявку</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

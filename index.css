@@ -1,0 +1,22 @@
+.service__wrapp {
+  display: flex;
+}
+
+.service__map {
+  width: 60%;
+  height: 400px;
+}
+
+.service__list {
+  padding: 0 10px;
+}
+
+.service-item {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+#selected-service {
+  display: none;
+  margin-top: 20px;
+}

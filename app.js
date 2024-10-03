@@ -13,6 +13,60 @@ const tireServices = [
     address: 'Московский проспект, 154',
     workingHours: '10:00 - 20:00',
     coords: [59.882415, 30.321069],
+  }, {
+    id: 2,
+    name: 'Шиномонтаж №2',
+    address: 'Московский проспект, 154',
+    workingHours: '10:00 - 20:00',
+    coords: [59.882415, 30.321069],
+  }, {
+    id: 2,
+    name: 'Шиномонтаж №2',
+    address: 'Московский проспект, 154',
+    workingHours: '10:00 - 20:00',
+    coords: [59.882415, 30.321069],
+  }, {
+    id: 2,
+    name: 'Шиномонтаж №2',
+    address: 'Московский проспект, 154',
+    workingHours: '10:00 - 20:00',
+    coords: [59.882415, 30.321069],
+  }, {
+    id: 2,
+    name: 'Шиномонтаж №2',
+    address: 'Московский проспект, 154',
+    workingHours: '10:00 - 20:00',
+    coords: [59.882415, 30.321069],
+  }, {
+    id: 2,
+    name: 'Шиномонтаж №2',
+    address: 'Московский проспект, 154',
+    workingHours: '10:00 - 20:00',
+    coords: [59.882415, 30.321069],
+  }, {
+    id: 2,
+    name: 'Шиномонтаж №2',
+    address: 'Московский проспект, 154',
+    workingHours: '10:00 - 20:00',
+    coords: [59.882415, 30.321069],
+  }, {
+    id: 2,
+    name: 'Шиномонтаж №2',
+    address: 'Московский проспект, 154',
+    workingHours: '10:00 - 20:00',
+    coords: [59.882415, 30.321069],
+  }, {
+    id: 2,
+    name: 'Шиномонтаж №2',
+    address: 'Московский проспект, 154',
+    workingHours: '10:00 - 20:00',
+    coords: [59.882415, 30.321069],
+  }, {
+    id: 2,
+    name: 'Шиномонтаж №2',
+    address: 'Московский проспект, 154',
+    workingHours: '10:00 - 20:00',
+    coords: [59.882415, 30.321069],
   },
 ];
 
@@ -25,6 +79,32 @@ function init() {
     zoom: 10,
   });
 
+  const showToggle = document.getElementById("show-toggle");
+
+  showToggle.onclick = function () {
+    const elements = showToggle.getElementsByClassName("service__show-line");
+    for (let i = 0; i < elements.length; i++) {
+      const currentTransform = elements[i].style.transform;
+
+      if (i === 0) {
+        if (currentTransform === 'rotate(-0.25turn)') {
+          elements[i].style.transform = '';
+        } else {
+          elements[i].style.transform = 'rotate(-0.25turn)';
+        }
+      } else {
+        if (currentTransform === 'rotate(0.5turn)') {
+          elements[i].style.transform = '';
+        } else {
+          elements[i].style.transform = 'rotate(0.5turn)';
+        }
+      }
+    }
+
+    showToggle.classList.toggle("service__show-toggle_theme_service_open");
+    document.getElementById("service-list").classList.toggle("service__list_theme_open");
+  };
+
   tireServices.forEach(service => {
     const placemark = new ymaps.Placemark(service.coords, {
       balloonContent: `<strong>${service.name}</strong><br>${service.address}<br>${service.workingHours}<br><button onclick="selectService(${service.id})">Выбрать</button>`,
@@ -35,7 +115,7 @@ function init() {
   // Отобразить список шиномонтажей
   const serviceList = document.getElementById('service-list');
   tireServices.forEach(service => {
-    const listItem = document.createElement('div');
+    const listItem = document.createElement('li');
     listItem.classList.add('service-item');
     listItem.innerHTML = `<strong>${service.name}</strong><br>${service.address}<br>${service.workingHours}<br><button onclick="selectService(${service.id})">Выбрать</button>`;
     serviceList.appendChild(listItem);

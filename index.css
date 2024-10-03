@@ -1,23 +1,82 @@
 .body {
-  background-color: blanchedalmond;
+  background-color: #fff;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
 }
 
 .service__wrapp {
   display: flex;
   width: 100%;
+  height: 100%;
 }
 
 .service__map {
-  width: 80%;
-  height: 400px;
+  width: 100%;
+  height: 100%;
+}
+
+.service__show-toggle {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  margin-left: auto;
+  top: -10%;
+  right: 0;
+  text-align: center;
+  width: 20px;
+  height: 40vh;
+  margin-top: 40vh;
+  border: 0;
+  background-color: #000;
+  opacity: .3;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  transition: .3s;
+}
+
+.service__show-toggle span {
+  display: flex;
+  flex-direction: column;
+}
+
+.service__show-toggle_theme_service_open {
+  margin-right: 25vw;
+}
+
+.service__show-line {
+  width: 10px;
+  height: 10px;
+  opacity: .6;
+  transition: .3s;
 }
 
 .service__list {
-  padding: 0 10px;
+  list-style: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  box-shadow: inset 1px 1px 6px 1px #808080;
+  padding: 0;
+  margin: 0;
+  margin-right: -25vw;
+  background-color: #f7f7f7;
+  width: 25vw;
+  height: 100vh;
+  z-index: 999;
+  transition: .3s;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.service__list_theme_open {
+  margin-right: 0;
 }
 
 .service-item {
-  margin-bottom: 10px;
+  margin: 10px 10px;
   cursor: pointer;
 }
 

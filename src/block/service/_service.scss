@@ -1,34 +1,4 @@
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("Inter-Regular.woff") format("woff");
-}
-
-.body {
-  box-sizing: border-box;
-  background-color: #fff;
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
-}
-
-.service__wrapp {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.service__map {
-  width: 100%;
-  height: 100%;
-}
-
 .service__show-toggle {
-  display: flex;
-  align-items: center;
   position: absolute;
   margin-left: auto;
   top: -10%;
@@ -45,33 +15,26 @@
   transition: .3s;
 }
 
-.service__show-toggle span {
-  display: flex;
-  flex-direction: column;
+.service__show-toggle {
+  cursor: pointer;
 }
 
 .service__show-toggle_theme_service_open {
   margin-right: 25vw;
 }
 
-.service__show-line {
-  width: 10px;
-  height: 10px;
-  opacity: .6;
-  transition: .3s;
-}
-
 .service__list {
-  font-family: 'Inter', Arial, sans-serif;
-  font-weight: 400;
+  position: absolute;
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
   position: absolute;
   top: 0;
   right: 0;
-
-  box-shadow: inset 1px 1px 6px 1px #808080;
-  padding: 0;
-  margin: 0;
+  box-shadow: inset 0 0 6px 0 #808080;
   margin-right: -25vw;
   background-color: #f7f7f7;
   width: 25vw;
@@ -87,9 +50,22 @@
 }
 
 .service-item {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 6px;
   font-size: 12px;
-  margin: 10px 10px;
+  background-color: rgba(128, 128, 128, .3);
   cursor: pointer;
+  border: 2px solid #808080;
+  border-radius: 4px;
+  padding: 6px;
+
+
+  h4,
+  p {
+    margin: 0;
+  }
 }
 
 #selected-service {

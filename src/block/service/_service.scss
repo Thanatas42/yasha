@@ -24,14 +24,13 @@
 }
 
 .service__list {
-  position: absolute;
+  position: fixed;
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 0;
   margin: 0;
-  position: absolute;
   top: 0;
   right: 0;
   box-shadow: inset 0 0 6px 0 #808080;

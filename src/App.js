@@ -23,6 +23,31 @@ const getPlacemarks = async () => {
   }
 };
 
+const createReq = async (body) => {
+  const url = `http://localhost:3001/form-request`;
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw { status: res.status, message: errorData.message };
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Ошибка при создании запроса:", error);
+    throw error;
+  }
+};
+
+
 function App() {
   const [placemarks, setPlacemarks] = useState([]);
   const [activePlacemark, setActivePlacemark] = useState(null);
@@ -59,6 +84,9 @@ function App() {
   function handleSubmit(e) {
     e.preventDefault();
 
+    const body = { id: popupData.id, client: requestData, request: { desc: '4 шины Pirelli 245/45/18 зима шипы' } };
+
+    createReq(body);
 
     handleCloseButton();
   }
@@ -71,7 +99,6 @@ function App() {
   const handleItemClick = (place) => {
 
     setActivePlacemark(place.id);
-    console.log(mapRef.current, place.id);
     if (mapRef.current) {
       const [lat, lon] = place.coords.split(',').map(Number);
 
@@ -91,6 +118,7 @@ function App() {
   function handleCloseButton() {
     setIsOpen(false);
     setPopupData({ name: '', shedule: '', address: '' });
+    setRequestData({});
   }
 
   return (

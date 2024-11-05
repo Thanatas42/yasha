@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { YMaps, Map, Placemark, SearchControl, TrafficControl } from '@pbe/react-yandex-maps';
+import { YMaps, Map, Placemark, SearchControl, TrafficControl, Clusterer } from '@pbe/react-yandex-maps';
 
 const getPlacemarks = async () => {
   const url = `http://localhost:3001/placemarks`;
@@ -47,7 +47,6 @@ const createReq = async (body) => {
   }
 };
 
-
 function App() {
   const [placemarks, setPlacemarks] = useState([]);
   const [activePlacemark, setActivePlacemark] = useState(null);
@@ -57,11 +56,14 @@ function App() {
   const mapRef = useRef(null);
   const placemarkRefs = useRef({});
 
+  const name = 'Дудин Дмитрий Сергеевич';
+  const phone = '89634665120';
+
   useEffect(() => {
     const fetchPlacemarks = async () => {
       try {
         const data = await getPlacemarks();
-        setPlacemarks(data);
+        setPlacemarks(data.sort((a, b) => a.name.localeCompare(b.name)));
       } catch (error) {
         console.error("Ошибка при установке данных:", error);
       }
@@ -73,7 +75,6 @@ function App() {
   useEffect(() => {
     if (placemarks.length !== 0) {
       window.selectService = (id) => {
-
         setPopupData(placemarks.find(x => x.id === id));
         setIsOpen(true);
       }
@@ -84,7 +85,7 @@ function App() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const body = { id: popupData.id, client: requestData, request: { desc: '4 шины Pirelli 245/45/18 зима шипы' } };
+    const body = { id: 1, client: requestData, request: { desc: '4 шины Pirelli 245/45/18 зима шипы' } };
 
     createReq(body);
 
@@ -108,11 +109,6 @@ function App() {
     if (placemarkRefs.current[place.id]) {
       placemarkRefs.current[place.id].balloon.open();
     }
-  };
-
-  const handleChange = (event) => {
-    const target = event.target;
-    setRequestData({ ...requestData, [target.name]: target.value });
   };
 
   function handleCloseButton() {
@@ -142,34 +138,39 @@ function App() {
             <TrafficControl options={{
               float: 'right'
             }} />
-            {placemarks.map((place) => {
-              const [lat, lon] = place.coords.split(',').map(Number);
-              return (
-                <Placemark
-                  key={place.id}
-                  geometry={[lat, lon]}
-                  instanceRef={(ref) => {
-                    if (ref) {
-                      placemarkRefs.current[place.id] = ref;
-                    }
-                  }}
-                  properties={{
-                    balloonContentHeader: `<strong>${place.name}</strong>`,
-                    balloonContentBody: `
+            <Clusterer options={{
+              preset: 'islands#invertedVioletClusterIcons',
+              groupByCoordinates: false
+            }}>
+              {placemarks.map((place) => {
+                const [lat, lon] = place.coords.split(',').map(Number);
+                return (
+                  <Placemark
+                    key={place.id}
+                    geometry={[lat, lon]}
+                    instanceRef={(ref) => {
+                      if (ref) {
+                        placemarkRefs.current[place.id] = ref;
+                      }
+                    }}
+                    properties={{
+                      balloonContentHeader: `<strong>${place.name}</strong>`,
+                      balloonContentBody: `
                       <div>
                         <p>${place.address}</p>
                         <p>${place.schedule}</p>
                         <button onclick="window.selectService(${place.id})">Выбрать</button>
                       </div>
                     `,
-                  }}
-                  options={{
-                    preset: 'islands#icon',
-                    iconColor: activePlacemark === place.id ? '#FF0000' : '#525e75',
-                  }}
-                />
-              );
-            })}
+                    }}
+                    options={{
+                      preset: 'islands#icon',
+                      iconColor: activePlacemark === place.id ? '#FF0000' : '#525e75',
+                    }}
+                  />
+                );
+              })}
+            </Clusterer>
           </Map>
         </YMaps>
         <button className='service__show-toggle' onClick={showPanel}>
@@ -191,18 +192,13 @@ function App() {
               <button className='popup__close_button' onClick={handleCloseButton}></button>
             </div>
             <form id='form' className='popup__form' onSubmit={handleSubmit} noValidate>
-              <div>
+              <div className='popup__detail'>
                 <h5>{popupData.name}</h5>
                 <p>{popupData.address}</p>
                 <p>{popupData.schedule}</p>
-                <p>4 шины Pirelli 245/45/18 зима шипы</p>
               </div>
-              <fieldset>
-                <label>ФИО</label>
-                <input type='text' name='name' required={true} onChange={handleChange} value={requestData.name || ''}></input>
-                <label>Телефон</label>
-                <input type='phone' name='phone' required={true} onChange={handleChange} value={requestData.phone || ''}></input>
-              </fieldset>
+              <p>ФИО: {name}</p>
+              <p>Контакт: {phone}</p>
               <div className='popup__submit-wrapp'>
                 <button type='submit'>Отправить</button>
               </div>

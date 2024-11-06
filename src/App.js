@@ -52,7 +52,9 @@ function App() {
   const [activePlacemark, setActivePlacemark] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [popupData, setPopupData] = useState({ name: '', shedule: '', address: '' });
-  const [requestData, setRequestData] = useState({});
+  const [visiblePlacemarks, setVisiblePlacemarks] = useState([]);
+  const [selectShin, setSelectShin] = useState({});
+
   const mapRef = useRef(null);
   const placemarkRefs = useRef({});
 
@@ -85,9 +87,12 @@ function App() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const body = { id: 1, client: requestData, request: { desc: '4 шины Pirelli 245/45/18 зима шипы' } };
+    const body = {
+      id: 1, ...popupData, request: { desc: '4 шины Pirelli 245/45/18 зима шипы' }
+    };
 
     createReq(body);
+    setSelectShin(body);
 
     handleCloseButton();
   }
@@ -114,8 +119,21 @@ function App() {
   function handleCloseButton() {
     setIsOpen(false);
     setPopupData({ name: '', shedule: '', address: '' });
-    setRequestData({});
   }
+
+  const handleBoundsChange = (e, map) => {
+    const bounds = map.getBounds();
+
+    const visible = placemarks.filter(({ coords }) => {
+      const [lat, lon] = coords.split(',').map(Number);
+      return (
+        lat >= bounds[0][0] && lat <= bounds[1][0] &&
+        lon >= bounds[0][1] && lon <= bounds[1][1]
+      );
+    });
+
+    setVisiblePlacemarks(visible);
+  };
 
   return (
     <div className='body'>
@@ -131,6 +149,7 @@ function App() {
             modules={['control.ZoomControl', 'control.FullscreenControl']}
             width='100%'
             height='100%'
+            onBoundsChange={(e) => handleBoundsChange(e, e.get('target'))}
           >
             <SearchControl options={{
               float: 'left'
@@ -176,7 +195,7 @@ function App() {
         <button className='service__show-toggle' onClick={showPanel}>
         </button>
         <ul className='service__list' id='service-list'>
-          {placemarks.map((item, index) => {
+          {visiblePlacemarks.map((item, index) => {
             return <li className='service-item' key={index} onClick={() => handleItemClick(item)}>
               <h4>{item.name}</h4>
               <p>{item.address}</p>
@@ -185,10 +204,17 @@ function App() {
           })}
         </ul>
 
+        <div className='select' style={{ 'display': selectShin.name ? 'block' : 'none' }}>
+          <h5>Выбранный шиномонтаж:</h5>
+          <p>{selectShin.name ? selectShin.name : ''}</p>
+          <p>{selectShin.address ? selectShin.address : ''}</p>
+          <p>{selectShin.shedule ? selectShin.shedule : ''}</p>
+        </div>
+
         <div className={`popup ${isOpen ? 'popup_them_open' : ''}`}>
           <div className='popup__container'>
             <div className='popup__tittle_wrap'>
-              <h5 className='popup__tittle'>Оформить заявку</h5>
+              <h4 className='popup__tittle'>Выбрать шиномонтаж</h4>
               <button className='popup__close_button' onClick={handleCloseButton}></button>
             </div>
             <form id='form' className='popup__form' onSubmit={handleSubmit} noValidate>
@@ -200,7 +226,7 @@ function App() {
               <p>ФИО: {name}</p>
               <p>Контакт: {phone}</p>
               <div className='popup__submit-wrapp'>
-                <button type='submit'>Отправить</button>
+                <button type='submit'>Выбрать</button>
               </div>
             </form>
           </div>

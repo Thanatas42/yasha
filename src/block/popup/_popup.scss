@@ -54,7 +54,7 @@
   display: flex;
   gap: 10px;
   justify-content: space-between;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #E5E4E2;
   align-items: center;
   padding: 10px 0;
 }
@@ -67,11 +67,11 @@
 
 .popup__close_button {
   background-image: url('../images/close.svg');
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   background-repeat: none;
   background-position: center;
-  background-size: 30px;
+  background-size: 26px;
   background-color: #fff;
   color: #808080;
   border: none;
@@ -82,7 +82,11 @@
 }
 
 .popup__detail {
-  border-bottom: 1px solid #808080;
+  border-bottom: 1px solid #E5E4E2;
+
+  h5, p {
+    font-size: 14px;
+  }
 }
 
 .popup__submit-wrapp {

@@ -90,7 +90,7 @@ function App() {
     const body = {
       id: 1, ...popupData, request: { desc: '4 шины Pirelli 245/45/18 зима шипы' }
     };
-
+    
     createReq(body);
     setSelectShin(body);
 
@@ -206,9 +206,9 @@ function App() {
 
         <div className='select' style={{ 'display': selectShin.name ? 'block' : 'none' }}>
           <h5>Выбранный шиномонтаж:</h5>
-          <p>{selectShin.name ? selectShin.name : ''}</p>
+          <p>{selectShin.name ? `«${selectShin.name}»` : ''}</p>
           <p>{selectShin.address ? selectShin.address : ''}</p>
-          <p>{selectShin.shedule ? selectShin.shedule : ''}</p>
+          <p>{selectShin.schedule ? selectShin.schedule : ''}</p>
         </div>
 
         <div className={`popup ${isOpen ? 'popup_them_open' : ''}`}>

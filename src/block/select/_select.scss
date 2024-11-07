@@ -1,9 +1,8 @@
 .select {
-    box-sizing: content-box;
+    box-sizing: border-box;
     position: fixed;
-    width: 100%;
-    max-width: 400px;
-    height: 100px;
+    width: auto;
+    height: auto;
     bottom: 10px;
     left: 10px;
     background-color: #fff;
@@ -13,8 +12,66 @@
 
     h5,
     p {
-        font-size: 14px;
+        font-size: 16px;
         padding-bottom: 8px;
         margin: 0;
+    }
+
+    .select__actions {
+        display: flex;
+        gap: 10px;
+        border: none;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+
+        .select__loader {
+            display: block;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect fill="%23FFFFFF" stroke="%23FFFFFF" stroke-width="15" width="30" height="30" x="25" y="85"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></rect><rect fill="%23FFFFFF" stroke="%23FFFFFF" stroke-width="15" width="30" height="30" x="85" y="85"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></rect><rect fill="%23FFFFFF" stroke="%23FFFFFF" stroke-width="15" width="30" height="30" x="145" y="85"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></rect></svg>');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: none;
+            outline: 0;
+            background-color: #5cb85c;
+            margin: 0;
+            width: 160px;
+            height: 40px;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: #4cae4c;
+            }
+        }
+    }
+
+}
+
+@media screen and (max-width: 420px) {
+    .select {
+
+        h5,
+        p {
+            font-size: 14px;
+        }
+
+        .select__actions {
+            flex-direction: column;
+        }
     }
 }

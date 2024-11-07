@@ -43,7 +43,6 @@ const createReq = async (body) => {
     return await res.json();
   } catch (error) {
     console.error("Ошибка при создании запроса:", error);
-    throw error;
   }
 };
 
@@ -54,6 +53,7 @@ function App() {
   const [popupData, setPopupData] = useState({ name: '', shedule: '', address: '' });
   const [visiblePlacemarks, setVisiblePlacemarks] = useState([]);
   const [selectShin, setSelectShin] = useState({});
+  const [status, setStatus] = useState(false);
 
   const mapRef = useRef(null);
   const placemarkRefs = useRef({});
@@ -84,17 +84,27 @@ function App() {
 
   }, [placemarks]);
 
-  function handleSubmit(e) {
+  function handleSubmit() {
+    setStatus(true);
+    createReq(selectShin).finally(() => {
+      setStatus(false);
+    });
+  }
+
+  function handleSelect(e) {
     e.preventDefault();
 
     const body = {
       id: 1, ...popupData, request: { desc: '4 шины Pirelli 245/45/18 зима шипы' }
     };
-    
-    createReq(body);
+
     setSelectShin(body);
 
     handleCloseButton();
+  }
+
+  function handleReset() {
+    setSelectShin({});
   }
 
   const showPanel = (event) => {
@@ -103,7 +113,6 @@ function App() {
   };
 
   const handleItemClick = (place) => {
-
     setActivePlacemark(place.id);
     if (mapRef.current) {
       const [lat, lon] = place.coords.split(',').map(Number);
@@ -205,10 +214,16 @@ function App() {
         </ul>
 
         <div className='select' style={{ 'display': selectShin.name ? 'block' : 'none' }}>
-          <h5>Выбранный шиномонтаж:</h5>
-          <p>{selectShin.name ? `«${selectShin.name}»` : ''}</p>
-          <p>{selectShin.address ? selectShin.address : ''}</p>
-          <p>{selectShin.schedule ? selectShin.schedule : ''}</p>
+          <div>
+            <h5>Выбранный шиномонтаж:</h5>
+            <p>{selectShin.name ? `«${selectShin.name}»` : ''}</p>
+            <p>{selectShin.address ? selectShin.address : ''}</p>
+            <p>{selectShin.schedule ? selectShin.schedule : ''}</p>
+          </div>
+          <fieldset className='select__actions'>
+            <button onClick={handleSubmit}>{status ? <span className='select__loader'></span> : 'Оформить'}</button>
+            <button onClick={handleReset}>Сбросить</button>
+          </fieldset>
         </div>
 
         <div className={`popup ${isOpen ? 'popup_them_open' : ''}`}>
@@ -217,7 +232,7 @@ function App() {
               <h4 className='popup__tittle'>Выбрать шиномонтаж</h4>
               <button className='popup__close_button' onClick={handleCloseButton}></button>
             </div>
-            <form id='form' className='popup__form' onSubmit={handleSubmit} noValidate>
+            <form id='form' className='popup__form' onSubmit={handleSelect} noValidate>
               <div className='popup__detail'>
                 <h5>{popupData.name}</h5>
                 <p>{popupData.address}</p>
@@ -231,6 +246,8 @@ function App() {
             </form>
           </div>
         </div>
+
+
       </div>
     </div >
   );
